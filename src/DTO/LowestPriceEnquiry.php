@@ -2,18 +2,27 @@
 
 namespace App\DTO;
 
-class LowestPriceEnquiry implements PromotionEnquiryInterface
-{
-    private ?int $productId;
+use App\Entity\Product;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Validator\Constraints as Assert;
 
-    private ?int $quantity;
+class LowestPriceEnquiry implements PriceEnquiryInterface
+{
+    #[Ignore]
+    private ?Product $product;
+
+    #[Assert\NotBlank]
+    #[Assert\Positive]
+    private ?int $quantity = 1;
 
     private ?string $request_location;
 
     private ?string $voucher_code;
 
+    #[Assert\NotBlank]
     private ?string $request_date;
 
+    #[Assert\Positive]
     private ?int $price;
 
     private ?int $discounted_price;
@@ -23,19 +32,19 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
     private ?string $promotion_name;
 
     /**
-     * @return int|null
+     * @return Product|null
      */
-    public function getProductId(): ?int
+    public function getProduct(): ?Product
     {
-        return $this->productId;
+        return $this->product;
     }
 
     /**
-     * @param int|null $productId
+     * @param Product|null $product
      */
-    public function setProductId(?int $productId): void
+    public function setProduct(?Product $product): void
     {
-        $this->productId = $productId;
+        $this->product = $product;
     }
 
     /**
@@ -165,5 +174,4 @@ class LowestPriceEnquiry implements PromotionEnquiryInterface
     {
         $this->promotion_name = $promotion_name;
     }
-
 }
